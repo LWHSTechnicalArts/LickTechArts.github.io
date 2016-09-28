@@ -22,17 +22,17 @@ var buttony5= 310;
 var shapefilled = false;
 var fullcircle = true;
 
-
+var killer;
 
 function setup() {
  //play with these too!
  fillcolor = color(0);
  createCanvas(1500, 700);
 
+ var killer = 0;
 
 
-
-
+  
   // Create objects in dragable array
   dragables.push(new Dragme());
   dragables.push(new Dragme());
@@ -122,21 +122,40 @@ function draw() {
   //generated code
   fill(0);
   text("NOTE: to acess the 'printed' code please open your", 10,370);
-  text(" browser's console", 10, 380)
-  text("beginShape();",10,400);
-  text("vertex(" + round(dragables[0].x-300) + "," + round(dragables[0].y) + ");",20,412);
+  text(" browser's console", 10, 380);
+  removeElements();
+  var htmltext = ['beginShape(); <br>' + "vertex(" + round(dragables[0].x-300) + "," + round(dragables[0].y) + "); <br>"];
+  
   for(var i = 1; i < dragables.length-1;i++){
-    text("bezierVertex(" + round(dragables[i].x-300) + "," + round(dragables[i].y) + "," + round(dragables[i+2].x-300) + "," + round(dragables[i+2].y) + "," + round(dragables[i+1].x-300) + "," + round(dragables[i+1].y) + ");", 20, 412+(i*4)+6);
+    htmltext.push("bezierVertex(" );
+    htmltext.push(round(dragables[i].x-300)); 
+    htmltext.push(",");
+    htmltext.push(round(dragables[i].y)); 
+    htmltext.push(",");
+    htmltext.push(round(dragables[i+2].x-300)); 
+    htmltext.push(","); 
+    htmltext.push(round(dragables[i+2].y)); 
+    htmltext.push(",");
+    htmltext.push(round(dragables[i+1].x-300)) 
+    htmltext.push(","); 
+    htmltext.push(round(dragables[i+1].y)); 
+    htmltext.push("); <br>");
     i++;
     i++;
   }
   if(fullcircle){
-    text("vertex(" + round(dragables[0].x-300) + "," + round(dragables[0].y) + ");",20,412+(dragables.length*4)+6)
-    text("endShape();",10,412+(i*4)+18);
+    htmltext.push("vertex(");
+    htmltext.push(round(dragables[0].x-300)); 
+    htmltext.push(","); 
+    htmltext.push(round(dragables[0].y)); 
+    htmltext.push("); <br>");
+    htmltext.push("endShape();");
   }
   else{
-    text("endShape();",10,412+(i*4)+6);
+    htmltext.push("endShape();");
   }
+  var printhtmltext = createDiv(join(htmltext, ""));
+  printhtmltext.position(10,400);
 
 
 
